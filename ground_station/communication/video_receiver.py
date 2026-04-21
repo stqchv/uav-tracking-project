@@ -51,5 +51,5 @@ def start_video_stream(port=5000):
     print("Connected to video stream. Starting thread...")
     return stream.start()
 
-def recieve_frame(stream):
+def receive_frame(stream):
     return stream.read()

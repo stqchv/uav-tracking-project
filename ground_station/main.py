@@ -1,7 +1,7 @@
 import cv2
 import time
 
-from communication.video_receiver import start_video_stream, recieve_frame
+from communication.video_receiver import start_video_stream, receive_frame
 from control import convert
 from vision import person_detector
 
@@ -12,14 +12,14 @@ def main():
     
     try:
         while True:
-            ret, frame = recieve_frame(video_stream)
+            ret, frame = receive_frame(video_stream)
 
             if not ret or frame is None:
                 print("Lost frame. Waiting for another...")
                 continue
 
             # YOLO detection
-            time.sleep(0.4)
+            # time.sleep(0.4)
 
             cv2.imshow("Base Station - Camera Preview", frame)
 
