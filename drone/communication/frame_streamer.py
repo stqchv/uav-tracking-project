@@ -25,7 +25,7 @@ class FrameStreamer:
             "-o", f"udp://{self.target_ip}:{self.port}"
         ]
         
-        print(f"[STREAMER] Trying to connect to {self.target_ip}:{self.port}...")
+        print(f"[STREAMER] Trying connect to {self.target_ip}:{self.port}...")
         self.process = subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         print("[STREAMER] Camera ready. Streaming...")
 
