@@ -1,24 +1,29 @@
 import cv2
 import time
 
-from communication.video_receiver import start_video_stream, receive_frame
+from communication.video_receiver import VideoStream
 from communication.telemetry_sender import TelemetrySender
-from ground_station.control import movementspeed
+# from control.movementspeed import ErrorToMovement
 from vision.person_detector import PersonDetector
 
 def main():
-    video_stream = start_video_stream(port=5000)
-    telemetry_sender = TelemetrySender(udp_ip="172.20.10.5", udp_port=5001)
+    video_stream = VideoStream(port=5000)
+    if not video_stream.running:
+        print("Error: Could not open stream.")
+        return
+    video_stream.start()
 
-    if (video_stream or telemetry_sender) is None : return
+    telemetry_sender = TelemetrySender(udp_ip="172.20.10.2", udp_port=5001)
+
+    test_x, test_y = 1, 2
+
     time.sleep(0.5)
 
     vision = PersonDetector()
     
     try:
         while True:
-            ret, frame = receive_frame(video_stream)
-
+            ret, frame = video_stream.read()
 
             if not ret or frame is None:
                 # print("Lost frame. Waiting for another...")
@@ -30,6 +35,8 @@ def main():
             # CONTROLL
             # if error_x is not None:
             #     print(f"Błąd X: {error_x}, Y: {error_y}")
+
+            telemetry_sender.send_velocity(test_x, test_y)
 
 
             cv2.imshow("Base Station - Tracking Live", annotated_frame)

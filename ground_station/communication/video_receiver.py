@@ -21,6 +21,7 @@ class VideoStream:
             self.running = True
 
     def start(self):
+        print(f"[COMMUNICATION] Starting ")
         self.thread = threading.Thread(target=self.update, args=(), daemon=True)
         self.thread.start()
         return self
@@ -35,20 +36,6 @@ class VideoStream:
     
     def stop(self):
         self.running = False
-        if self.thread.is_alive():
+        if hasattr(self, 'thread') and self.thread.is_alive():
             self.thread.join()
         self.cap.release()
-    
-def start_video_stream(port=5000):
-    print(f"Waiting for the stream on port {port}...")
-    stream = VideoStream(port)
-    
-    if not stream.running:
-        print("Error: Could not open stream.")
-        return None
-    
-    print("Connected to video stream. Starting thread...")
-    return stream.start()
-
-def receive_frame(stream):
-    return stream.read()

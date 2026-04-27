@@ -1,7 +1,7 @@
 import socket
 
 class TelemetrySender:
-    def __init__(self, udp_ip, udp_port=5000):
+    def __init__(self, udp_ip, udp_port=5001):
         self.udp_ip = udp_ip
         self.udp_port = udp_port
 
