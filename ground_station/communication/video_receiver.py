@@ -39,7 +39,6 @@ class VideoStream:
             self.thread.join()
         self.cap.release()
     
-
 def start_video_stream(port=5000):
     print(f"Waiting for the stream on port {port}...")
     stream = VideoStream(port)
