@@ -17,12 +17,17 @@ def main():
 
     test_x, test_y = 1, 2
 
+    telemetry_sender.send_velocity(test_x, test_y)
+
     time.sleep(0.5)
 
     vision = PersonDetector()
     
     try:
         while True:
+            telemetry_sender.send_velocity(test_x, test_y)
+            print(f"[TELEMETRY] Sending telemetry message.")
+
             ret, frame = video_stream.read()
 
             if not ret or frame is None:
@@ -36,7 +41,6 @@ def main():
             # if error_x is not None:
             #     print(f"Błąd X: {error_x}, Y: {error_y}")
 
-            telemetry_sender.send_velocity(test_x, test_y)
 
 
             cv2.imshow("Base Station - Tracking Live", annotated_frame)

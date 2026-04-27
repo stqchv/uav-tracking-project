@@ -14,7 +14,7 @@ def main():
         while True:
             v_x, v_y = receiver.read()
 
-            if v_x is None and v_y is not None:
+            if v_x is not None and v_y is not None:
                 print(f"[CONTROL] Recieved movement: v_x: {v_x}, v_y: {v_y}")
             
             time.sleep(.1)
