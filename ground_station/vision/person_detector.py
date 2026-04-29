@@ -17,16 +17,16 @@ class PersonDetector:
 
         if self.width is None:
             self.height, self.width = frame.shape[:2]
-            self.center_x = self.width // 2
-            self.center_y = self.height // 2
+            self.center_x = self.width // 2.0
+            self.center_y = self.height // 2.0
             print(f"[VISION] Set image middle point (UDP): ({self.center_x}, {self.center_y})")
         
         annotated_frame = frame.copy()
 
         results = self.model.predict(frame, classes=0, conf=.5, verbose=False)
 
-        cv2.drawMarker(annotated_frame, (self.center_x, self.center_y), (0, 0, 255), cv2.MARKER_CROSS, 20, 2)
-        
+        cv2.drawMarker(annotated_frame, (int(self.center_x), int(self.center_y)), (0, 0, 255), cv2.MARKER_CROSS, 20, 2)
+
         error_x, error_y = None, None
 
         for r in results:
@@ -37,14 +37,17 @@ class PersonDetector:
                 person_cx = (x1 + x2) // 2
                 person_cy = (y1 + y2) // 2
                 
-                error_x = person_cx - self.center_x
-                error_y = person_cy - self.center_y
+                raw_error_x = person_cx - self.center_x
+                raw_error_y = person_cy - self.center_y
+
+                error_x = raw_error_x / self.center_x
+                error_y = -(raw_error_y / self.center_y)
                 
                 cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.circle(annotated_frame, (person_cx, person_cy), 5, (0, 255, 0), -1)
-                cv2.line(annotated_frame, (self.center_x, self.center_y), (person_cx, person_cy), (0, 255, 255), 2)
+                cv2.line(annotated_frame, (int(self.center_x), int(self.center_y)), (person_cx, person_cy), (0, 255, 255), 2)
                 
-                cv2.putText(annotated_frame, f"Blad X: {error_x}px | Blad Y: {error_y}px", (20, 90), 
+                cv2.putText(annotated_frame, f"Blad X: {error_x:.2f} | Blad Y: {error_y:.2f}", (20, 90), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
 
         # FPS 

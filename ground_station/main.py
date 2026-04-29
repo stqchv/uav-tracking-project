@@ -32,11 +32,11 @@ def main():
             # YOLO detection
             error_x, error_y, annotated_frame = vision.get_target_error(frame)
 
-            telemetry_sender.send_velocity(error_x, error_y)
+            # Convert error to velocity
 
-            # CONTROLL
-            # if error_x is not None:
-            #     print(f"Błąd X: {error_x}, Y: {error_y}")
+
+            # Sending velocity to drone
+            telemetry_sender.send_velocity(error_x, error_y)
 
             cv2.imshow("Base Station - Tracking Live", annotated_frame)
 
