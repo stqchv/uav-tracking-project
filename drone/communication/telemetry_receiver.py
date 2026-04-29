@@ -28,7 +28,7 @@ class TelemetryReceiver:
             return None, None
         
         except Exception as e:
-            print(f"[TELEMETRIA] Odrzucono uszkodzony pakiet: {e}")
+            print(f"[TELEMETRIA] Recieved broken message: {e}")
             return None, None
 
     def close(self):

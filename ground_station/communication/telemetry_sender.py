@@ -11,6 +11,7 @@ class TelemetrySender:
     def send_velocity(self, v_x, v_y):
         message = f"{v_x},{v_y}"
         self.sock.sendto(message.encode('utf-8'), (self.udp_ip, self.udp_port))
+        print(f"[TELEMETRY] Message {v_x}, {v_y} sent.")
     
     def close(self):
         self.sock.close()
