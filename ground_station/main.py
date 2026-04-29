@@ -43,6 +43,8 @@ def main():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 print("Closing ground station...")
                 break
+
+            time.sleep(0.05)
     finally:
         video_stream.stop()
         cv2.destroyAllWindows()
