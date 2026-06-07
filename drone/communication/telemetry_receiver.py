@@ -13,6 +13,8 @@ class TelemetryReceiver:
         print(f"[TELEMETRY] Reciever ready. Listening to port: {self.udp_port}...")
 
     def read(self):
+        latest_data = None
+
         while True:
             try:
                 data, addr = self.sock.recvfrom(1024)
@@ -21,22 +23,23 @@ class TelemetryReceiver:
             except BlockingIOError:
                 break
 
-            except Exception as e:
-                continue
+            except Exception:
+                break
             
-            if latest_data is None:
-                return None, None
+        if latest_data is None:
+            return None, None
             
         try:
             text_data = data.decode('utf-8')
             v_x_str, v_y_str = text_data.split(',')
+
             v_x = float(v_x_str)
             v_y = float(v_y_str)
 
             return v_x, v_y
     
         except Exception as e:
-            print(f"[TELEMETRIA] Error parsing newest message: {e}")
+            print(f"[TELEMETRIA] Error parsing message: {e}")
             return None, None
 
     def close(self):
